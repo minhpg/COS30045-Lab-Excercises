@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Data Visualisation Exercise 1.2" />
+    <meta name="keywords" content="HTML, CSS, JS" />
+    <meta name="author" content="Gia Minh Pham - 103808249" />
+
+    <title>Task 1.2 Javascript</title>
+    <!--Insert description of exercise  -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+    <style></style>
+  </head>
+
+  <body class="container mx-auto py-6 flex flex-col items-center">
+    <main class="prose">
+      <h1>Pets and the Pandemic</h1>
+      <h2>Swinburne University of Technology</h2>
+      <p>
+        A report from Animal Medicines Australia (AMA) has found that many
+        Australians took the opportunity to introduce a pet into their household
+        during the pandemic. Their survey indicated that there was a significant
+        increase in the percent of households taking in a new dog, fish or bird.
+        Their research also indicated that pets had a number of positive
+        influences on their lives such as:
+      </p>
+      <ul>
+        <li>companionship</li>
+        <li>better mental health</li>
+        <li>joy and happiness.</li>
+      </ul>
+      <button
+        class="bg-blue-600 rounded-lg px-3 py-2 font-bold hover:opacity-80 shadow-xl text-white"
+        onclick="setFigData(0)"
+      >
+        Table
+      </button>
+      <button
+        class="bg-blue-600 rounded-lg px-3 py-2 font-bold hover:opacity-80 shadow-xl text-white"
+        onclick="setFigData(1)"
+      >
+        Chart 1
+      </button>
+      <button
+        class="bg-blue-600 rounded-lg px-3 py-2 font-bold hover:opacity-80 shadow-xl text-white"
+        onclick="setFigData(2)"
+      >
+        Chart 2
+      </button>
+      <figure id="fig_main">
+        <img src="pet_ownership_in_australia_table.png" />
+        <figcaption>
+          Fig 1. Table - Comparison of Pet Ownership in 2019 and 2021. Source:
+          <a
+            href="https://animalmedicinesaustralia.org.au/wp-content/uploads/2021/08/AMAU005-PATP-Report21_v1.41_WEB.pdf"
+            target="_blank"
+            >Animal Medicines Australia Report</a
+          >
+        </figcaption>
+      </figure>
+      <p>
+        With the increase in pet ownership the AMA are encouraging policy makers
+        to consider the needs of companion animals and their owners when
+        considering rental, strata and body corporate regulations are well as
+        accepting animals in public places and transport.
+      </p>
+    </main>
+
+    <footer class="font-black p-6">COS30045 Data Visualisation</footer>
+  </body>
+  <script>
+    const figData = [
+      {
+        img_url: "pet_ownership_in_australia_table.png",
+        caption: "Table - Comparison of Pet Ownership in 2019 and 2021",
+        sourceUrl:
+          "https://animalmedicinesaustralia.org.au/wp-content/uploads/2021/08/AMAU005-PATP-Report21_v1.41_WEB.pdf",
+        sourceName: "Animal Medicines Australia Report",
+      },
+      {
+        img_url: "graph_1.png",
+        caption: "Chart - Comparison of Pet Ownership in 2019 and 2021",
+        sourceUrl:
+          "https://animalmedicinesaustralia.org.au/wp-content/uploads/2021/08/AMAU005-PATP-Report21_v1.41_WEB.pdf",
+        sourceName: "Animal Medicines Australia Report",
+      },
+      {
+        img_url: "graph_2.png",
+        caption: "Pie Chart - Percentage of Pet Ownership in 2019 and 2021",
+        sourceUrl:
+          "https://animalmedicinesaustralia.org.au/wp-content/uploads/2021/08/AMAU005-PATP-Report21_v1.41_WEB.pdf",
+        sourceName: "Animal Medicines Australia Report",
+      },
+    ];
+
+    const setFigData = (index) => {
+
+      const data = figData[index];
+
+      if (!data) return;
+
+      const { img_url, caption, sourceUrl, sourceName } = data;
+
+      const fig = document.getElementById("fig_main");
+      fig.innerHTML = `
+		<img src="${img_url}" alt="${caption}" />
+		  <figcaption>
+			Fig ${index + 1}. ${caption}. Source:
+			<a
+			  href="${sourceUrl}"
+			  target="_blank"
+			  >${sourceName}</a
+			>
+		  </figcaption>`;
+      // window.scrollTo(fig.offsetLeft, fig.offsetTop);
+    };
+  </script>
+</html>

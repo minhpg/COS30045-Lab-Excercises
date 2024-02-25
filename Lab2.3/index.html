@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Data Visualisation Exercise 2.3" />
+    <meta name="keywords" content="HTML CSS JS" />
+    <meta name="author" content="Gia Minh Pham - 103808249" />
+
+    <title>Task 2.3 D3 Drawing with Data - Scatter Plot</title>
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+
+    <style></style>
+  </head>
+
+  <body class="container mx-auto py-6 flex flex-col items-center h-screen">
+    <main class="prose flex-1">
+      <h1>D3 Drawing with Data - Scatter Plot</h1>
+      <figure id="scatter-plot"></figure>
+    </main>
+
+    <footer class="font-black p-6 text-center">
+      <div class="font-light">Gia Minh Pham - 103808249</div>
+      <div>COS30045 Data Visualisation</div>
+    </footer>
+
+    <script>
+      const width = 500;
+      const height = 500;
+      const radius = 5;
+      const fill = "slategrey";
+      const textOffsetX = 3;
+      const textOffsetY = -1;
+      const dataset = [
+        [5, 20, 5],
+        [480, 90, 6],
+        [250, 50, 1],
+        [100, 33, 2],
+        [330, 95, 3],
+        [410, 12, 7],
+        [475, 44, 8],
+        [25, 67, 2],
+        [85, 21, 6],
+        [220, 88, 1],
+      ];
+
+      let svg = d3
+        .select("#scatter-plot")
+        .append("svg")
+        .attr("class", "w-full")
+        .append("g");
+
+      // const heightStep = height / Math.max.apply(null, dataset);
+      // console.log(heightStep);
+
+      let data = svg.selectAll("circle").data(dataset).enter();
+
+      data
+        .append("circle")
+        .attr("cx", (data) => data[0])
+        .attr("cy", (data) => data[1])
+        .attr("fill", fill)
+        .attr("r", (data) => data[2]);
+
+      data
+        .append("text")
+        .attr("x", (data) => data[0] + data[2] + textOffsetX)
+        .attr("y", (data) => data[1] + data[2] + textOffsetY)
+        .attr("class", "text-sm font-thin")
+        .text((data) => `${data[0]}, ${data[1]}`);
+
+      d3.select("#scatter-plot")
+        .append("figcaption")
+        .text("Figure 1. Test scatter plot data binding with SVG");
+    </script>
+  </body>
+</html>

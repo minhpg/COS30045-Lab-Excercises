@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Data Visualisation Exercise 2.2" />
+    <meta name="keywords" content="HTML CSS JS" />
+    <meta name="author" content="Gia Minh Pham - 103808249" />
+
+    <title>Task 2.2 D3 Drawing with Data - Bar Chart</title>
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+
+    <style></style>
+  </head>
+
+  <body class="container mx-auto py-6 flex flex-col items-center h-screen">
+    <main class="prose flex-1">
+      <h1>D3 Drawing with Data - Bar Chart</h1>
+      <figure id="bar-chart"></figure>
+    </main>
+
+    <footer class="font-black p-6 text-center">
+      <div class="font-light">Gia Minh Pham - 103808249</div>
+      <div>COS30045 Data Visualisation</div>
+    </footer>
+
+    <script>
+      const width = 500;
+      const height = 500;
+      const padding = 5;
+      const dataset = [14, 5, 26, 23, 9];
+
+      let svg = d3
+        .select("#bar-chart")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .append("g")
+
+      const maxHeight = Math.max.apply(null, dataset)
+      const heightStep = height / maxHeight;
+      console.log(heightStep);
+
+      svg
+        .selectAll("rect")
+        .data(dataset)
+        .enter()
+        .append("rect")
+        .attr("x", (_, index) => index * (width / dataset.length))
+        .attr("y", (data) => height - (data * heightStep))
+        .attr("width", width / dataset.length - padding)
+        .attr("height", (data) => data * heightStep);
+
+      d3.select("#bar-chart")
+        .append("figcaption")
+        .text("Figure 1. Test bar chart data binding with SVG");
+    </script>
+  </body>
+</html>
