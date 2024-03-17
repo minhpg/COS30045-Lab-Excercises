@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Data Visualisation Exercise 5.1" />
+    <meta name="keywords" content="HTML CSS JS" />
+    <meta name="author" content="Gia Minh Pham - 103808249" />
+
+    <title>Task 5.1 D3 Updates</title>
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+
+    <style></style>
+  </head>
+
+  <body class="container mx-auto py-6 flex flex-col items-center h-screen">
+    <main class="prose flex-1">
+      <h1>D3 Updates</h1>
+      <figure id="bar-chart"></figure>
+      <button
+        id="btn-update-graph"
+        class="bg-blue-500 rounded-lg text-white px-3 py-2"
+      >
+        Update data
+      </button>
+    </main>
+
+    <footer class="font-black p-6 text-center">
+      <div class="font-light">Gia Minh Pham - 103808249</div>
+      <div>COS30045 Data Visualisation</div>
+    </footer>
+
+    <script>
+      /** Graph configs */
+      const width = 500;
+      const height = 500;
+      const margin = 20;
+      const maxValue = 25;
+      const maxLength = 25;
+      const padding = (width / maxLength) * 0.05;
+      const ticks = 5;
+
+      /** Generate random dataset*/
+      const generateDataset = () => {
+        /** Create array with length */
+        return (
+          Array(maxLength)
+            /** Temporary fill with 0s */
+            .fill(0)
+            /** Map to random function */
+            .map(
+              () => Math.ceil(Math.random() * maxValue) // Math.random*value => creates value between 0-maxValue
+            )
+        );
+      };
+
+      let dataset = generateDataset();
+
+      const createGraph = ({ dataset }) => {
+        /** Clear graph */
+        d3.selectAll("#bar-chart> *").remove();
+
+        /** Calculate width & height with margin */
+
+        const innerWidth = width - margin * 2;
+        const innerHeight = height - margin * 2;
+
+        /** Initialize x/y scales */
+        const xScale = d3
+          .scaleBand()
+          .domain(d3.range(dataset.length))
+          .range([0, innerWidth]);
+
+        const yScale = d3
+          .scaleLinear()
+          .domain([0, d3.max(dataset)])
+          .range([0, innerHeight]);
+
+        /** Create SVG DOM object */
+        let svg = d3
+          .select("#bar-chart")
+          .append("svg")
+          .attr("width", width)
+          .attr("height", height)
+          .append("g");
+
+        /** Draw bars */
+        svg
+          .selectAll("rect")
+          .data(dataset)
+          .enter()
+          .append("rect")
+          .attr("x", (_, index) => index * xScale.bandwidth() + padding)
+          .attr("width", xScale.bandwidth() - padding)
+          .attr("y", (data) => innerHeight - yScale(data))
+          .attr("height", (data) => yScale(data));
+
+        /** Draw x-axis */
+        svg
+          .append("g")
+          .attr("transform", `translate(0,${innerHeight})`)
+          .call(d3.axisBottom(xScale));
+
+        /** Draw y-axis */
+        svg
+          .append("g")
+          .attr("transform", `rotate(90) translate(0, ${-padding})`)
+          .call(d3.axisLeft().ticks(ticks).scale(yScale));
+
+        /** Create caption */
+        d3.select("#bar-chart")
+          .append("figcaption")
+          .text("Figure 1. Test bar chart data binding with SVG");
+      };
+
+      /** First draw */
+      createGraph({ dataset });
+
+      /** Button event listener */
+      d3.select("#btn-update-graph").on("click", () => {
+        /** Generate new dataset */
+        dataset = generateDataset();
+        createGraph({ dataset });
+      });
+    </script>
+  </body>
+</html>

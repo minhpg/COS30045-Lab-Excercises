@@ -26,6 +26,7 @@
     </footer>
 
     <script>
+      /** Graph configs */
       const width = 500;
       const height = 500;
       const radius = 5;
@@ -39,6 +40,7 @@
       const paddingX = padding+paddingTextWidth
       const paddingY = padding+paddingTextWidth
 
+      /** Initialize dataset */
       const dataset = [
         [5, 20, 5],
         [500, 90, 6],
@@ -52,30 +54,38 @@
         [220, 88, 1],
       ];
 
-      const xMin = d3.min(dataset, (d) => d[0]);
+      /** Find axis min/max for scaling
+       * First element in array = x
+       * Second element in array = y
+       */
+
+      const xMin = d3.min(dataset, (d) => d[0]); 
       const yMin = d3.min(dataset, (d) => d[1]);
       const xMax = d3.max(dataset, (d) => d[0]);
       const yMax = d3.max(dataset, (d) => d[1]);
 
+      /** Initialize x/y scales */
       const xScale = d3
         .scaleLinear()
         .domain([xMin, xMax])
-        .range([paddingX, width - paddingX]);
+        .range([paddingX, width - paddingX]); // Deduct padding
       const yScale = d3
         .scaleLinear()
         .domain([yMin, yMax])
-        .range([padding, height - paddingY]);
+        .range([padding, height - paddingY]); // Deduct padding
 
-      let svg = d3
+      /** Create SVG DOM object */
+        let svg = d3
         .select("#scatter-plot")
         .append("svg")
         .attr("width", width)
         .attr("height", height)
         .append("g");
 
-
+      /** Enter dataset */
       let data = svg.selectAll("circle").data(dataset).enter();
 
+      /** Draw nodes */
       data
         .append("circle")
         .attr("cx", (data) => xScale(data[0]))
@@ -83,13 +93,15 @@
         .attr("fill", fill)
         .attr("r", (data) => data[2]);
 
+      /** Draw labeles */
       data
         .append("text")
         .attr("x", (data) => xScale(data[0]) + data[2] + textOffsetX)
         .attr("y", (data) => height - yScale(data[1]) + data[2] + textOffsetY)
-        .attr("class", "text-sm font-thin")
+        .attr("class", "text-sm font-thin") // Tailwind font classes
         .text((data) => `${data[0]}, ${data[1]}`);
 
+      /** Create caption */
       d3.select("#scatter-plot")
         .append("figcaption")
         .text("Figure 1. Test scatter plot scaling");
