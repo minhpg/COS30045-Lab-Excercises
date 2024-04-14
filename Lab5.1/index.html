@@ -57,71 +57,74 @@
 
       let dataset = generateDataset();
 
-      const createGraph = ({ dataset }) => {
-        /** Clear graph */
-        d3.selectAll("#bar-chart> *").remove();
+      /** Calculate width & height with margin */
 
-        /** Calculate width & height with margin */
+      const innerWidth = width - margin * 2;
+      const innerHeight = height - margin * 2;
 
-        const innerWidth = width - margin * 2;
-        const innerHeight = height - margin * 2;
+      /** Initialize x/y scales */
+      const xScale = d3
+        .scaleBand()
+        .domain(d3.range(dataset.length))
+        .range([0, innerWidth]);
 
-        /** Initialize x/y scales */
-        const xScale = d3
-          .scaleBand()
-          .domain(d3.range(dataset.length))
-          .range([0, innerWidth]);
+      const yScale = d3
+        .scaleLinear()
+        .domain([0, d3.max(dataset)])
+        .range([0, innerHeight]);
 
-        const yScale = d3
-          .scaleLinear()
-          .domain([0, d3.max(dataset)])
-          .range([0, innerHeight]);
+      /** Create SVG DOM object */
+      const svg = d3
+        .select("#bar-chart")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .append("g");
 
-        /** Create SVG DOM object */
-        let svg = d3
-          .select("#bar-chart")
-          .append("svg")
-          .attr("width", width)
-          .attr("height", height)
-          .append("g");
+      /** Draw bars */
+      svg
+        .selectAll("rect")
+        .data(dataset)
+        .enter()
+        .append("rect")
+        .attr("x", (_, index) => index * xScale.bandwidth() + padding)
+        .attr("width", xScale.bandwidth() - padding)
+        .attr("y", (data) => innerHeight - yScale(data))
+        .attr("height", (data) => yScale(data));
 
+      /** Draw x-axis */
+      svg
+        .append("g")
+        .attr("transform", `translate(0,${innerHeight})`)
+        .call(d3.axisBottom(xScale));
+
+      /** Draw y-axis */
+      svg
+        .append("g")
+        .attr("transform", `rotate(90) translate(0, ${-padding})`)
+        .call(d3.axisLeft().ticks(ticks).scale(yScale));
+
+      /** Create caption */
+      d3.select("#bar-chart")
+        .append("figcaption")
+        .text("Figure 1. Test bar chart data binding with SVG");
+
+      const updateGraph = ({ dataset }) => {
         /** Draw bars */
         svg
           .selectAll("rect")
           .data(dataset)
-          .enter()
-          .append("rect")
           .attr("x", (_, index) => index * xScale.bandwidth() + padding)
           .attr("width", xScale.bandwidth() - padding)
           .attr("y", (data) => innerHeight - yScale(data))
           .attr("height", (data) => yScale(data));
-
-        /** Draw x-axis */
-        svg
-          .append("g")
-          .attr("transform", `translate(0,${innerHeight})`)
-          .call(d3.axisBottom(xScale));
-
-        /** Draw y-axis */
-        svg
-          .append("g")
-          .attr("transform", `rotate(90) translate(0, ${-padding})`)
-          .call(d3.axisLeft().ticks(ticks).scale(yScale));
-
-        /** Create caption */
-        d3.select("#bar-chart")
-          .append("figcaption")
-          .text("Figure 1. Test bar chart data binding with SVG");
       };
-
-      /** First draw */
-      createGraph({ dataset });
 
       /** Button event listener */
       d3.select("#btn-update-graph").on("click", () => {
         /** Generate new dataset */
         dataset = generateDataset();
-        createGraph({ dataset });
+        updateGraph({ dataset });
       });
     </script>
   </body>
