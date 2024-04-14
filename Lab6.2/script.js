@@ -124,12 +124,11 @@ d3.select("#input-transition-duration").attr("value", transitionDuration);
 d3.select("#input-num-add").attr("value", addDataMax);
 
 /** Create Tooltip */
-const tooltip = d3
-  .select("#tooltip")
-  .style("position", "absolute")
-  .style("visibility", "hidden");
+const tooltip = d3.select("#tooltip").style("visibility", "hidden");
 
-/** Build transition function */
+/** Build transition function.
+ *  Needs to be a function to be able to change transition settings
+ */
 const buildTransition = () => {
   return d3
     .transition()
@@ -189,9 +188,6 @@ const drawGraph = () => {
       const el = d3.select(event.target);
       el.attr("fill", "rgb(59, 130, 246)");
       tooltip.style("visibility", "visible");
-      tooltip
-        .style("top", event.pageY + "px")
-        .style("left", event.pageX + "px");
       tooltip.select("#tooltip-content").text("Value: " + d);
     })
     .on("mouseleave", (event) => {
@@ -201,8 +197,8 @@ const drawGraph = () => {
     })
     .on("mousemove", (event) => {
       tooltip
-        .style("top", event.pageY + "px")
-        .style("left", event.pageX + "px");
+        .style("top", (event.clientY - 10).toString() + "px")
+        .style("left", (event.clientX + 10).toString() + "px");
     })
     .transition(buildTransition())
     .attr("x", (_, index) => index * xScale.bandwidth() + padding)
