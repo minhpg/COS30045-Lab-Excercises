@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Data Visualisation Exercise 8.2" />
+    <meta name="keywords" content="HTML CSS JS" />
+    <meta name="author" content="Gia Minh Pham - 103808249" />
+
+    <title>Task 8.2 D3 Choropleths</title>
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
+    <link href="./style.css" rel="stylesheet" />
+  </head>
+
+  <body
+    class="container mx-auto py-6 flex flex-col items-center h-screen relative"
+  >
+    <div
+      id="tooltip"
+      class="rounded px-5 py-3 text-sm border border-gray-200 shadow bg-white"
+      style="position: fixed; visibility: hidden"
+    >
+      <div id="tooltip-title" class="font-semibold"></div>
+      <div id="tooltip-content" class="text-gray-500"></div>
+    </div>
+    <main class="prose w-full flex-1">
+      <h1>D3 Geo Paths and Projections</h1>
+      <figure id="chart"></figure>
+    </main>
+
+    <footer class="font-black p-6 text-center">
+      <div class="font-light">Gia Minh Pham - 103808249</div>
+      <div>COS30045 Data Visualisation</div>
+    </footer>
+    <!-- Migrate to JS module and local d3 to get intellisense -->
+    <script type="module" src="script.js"></script>
+  </body>
+</html>
