@@ -26,12 +26,12 @@ const init = async () => {
     .scale(4000);
 
   const path = d3.geoPath().projection(projection);
-  const { features, ...fields } = await d3.json("/assets/LGA_VIC.json");
+  const { features, ...fields } = await d3.json("../assets/LGA_VIC.json");
   const vicLGAUnemploymentData = await d3.csv(
-    "/assets/VIC_LGA_unemployment.csv"
+    "../assets/VIC_LGA_unemployment.csv"
   );
 
-  const vicStateData = await d3.csv("/assets/VIC_city.csv");
+  const vicStateData = await d3.csv("../assets/VIC_city.csv");
 
   const mergedData = features.map(
     ({ properties: { LGA_name, ...propertyFields }, ...fields }) => {

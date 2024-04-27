@@ -23,7 +23,7 @@ const init = async () => {
     .translate([width / 2, height / 2])
     .scale(3000);
   const path = d3.geoPath().projection(projection);
-  const data = await d3.json("/assets/LGA_VIC.json");
+  const data = await d3.json("../assets/LGA_VIC.json");
 
   console.log(data);
 
